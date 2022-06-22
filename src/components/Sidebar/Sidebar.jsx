@@ -7,6 +7,8 @@ import { useTheme } from '@mui/styles';
 import { height } from '@mui/system';
 import useStyles from './styles';
 
+import { useGetGenresQuery } from '../../services/TMDB';
+
 const redLogo = 'https://fontmeme.com/permalink/210930/8531c658a743debe1e1aa1a2fc82006e.png';
 
 const blueLogo = 'https://fontmeme.com/permalink/220617/a20a0fddee7feac7140aab92d21e476f.png';
@@ -27,6 +29,7 @@ const mockCategories = [
 const Sidebar = ({ setMobileOpen }) => {
   const theme = useTheme();
   const classes = useStyles();
+  const { data, error, isFetching } = useGetGenresQuery();
 
   return (
     <>
@@ -54,13 +57,17 @@ const Sidebar = ({ setMobileOpen }) => {
       <Divider />
       <List>
         <ListSubheader>Genres</ListSubheader>
-        {mockCategories.map(({ label, value }) => (
-          <Link key={value} className={classes.links} to="/">
+        {isFetching ? (
+          <Box display="flex" justifyContent="center">
+            <CircularProgress />
+          </Box>
+        ) : data.genres.map(({ name, id }) => (
+          <Link key={name} className={classes.links} to="/">
             <ListItem onClick={() => {}} button>
               {/* <ListItemIcon>
                 <img src={redLogo} className={classes.genreImages} height={30} />
               </ListItemIcon> */}
-              <ListItemText primary={label} />
+              <ListItemText primary={name} />
             </ListItem>
           </Link>
         ))}
