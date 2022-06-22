@@ -7,6 +7,8 @@ import { useTheme } from '@mui/styles';
 import { height } from '@mui/system';
 import useStyles from './styles';
 
+import genreIcons from '../../assets/genres';
+
 import { useGetGenresQuery } from '../../services/TMDB';
 
 const redLogo = 'https://fontmeme.com/permalink/210930/8531c658a743debe1e1aa1a2fc82006e.png';
@@ -17,13 +19,6 @@ const categories = [
   { label: 'Popular', value: 'popular' },
   { label: 'Top Rated', value: 'top Rated' },
   { label: 'Upcoming', value: 'upcoming' },
-];
-
-const mockCategories = [
-  { label: 'Comedy', value: 'comedy' },
-  { label: 'Action', value: 'action' },
-  { label: 'Thriller', value: 'thriller' },
-  { label: 'Horror', value: 'horror' },
 ];
 
 const Sidebar = ({ setMobileOpen }) => {
@@ -46,9 +41,9 @@ const Sidebar = ({ setMobileOpen }) => {
         {categories.map(({ label, value }) => (
           <Link key={value} className={classes.links} to="/">
             <ListItem onClick={() => {}} button>
-              {/* <ListItemIcon>
-                <img src={redLogo} className={classes.genreImages} height={30} />
-              </ListItemIcon> */}
+              <ListItemIcon>
+                <img src={genreIcons[label.toLowerCase()]} className={classes.genreImages} height={30} />
+              </ListItemIcon>
               <ListItemText primary={label} />
             </ListItem>
           </Link>
@@ -64,9 +59,9 @@ const Sidebar = ({ setMobileOpen }) => {
         ) : data.genres.map(({ name, id }) => (
           <Link key={name} className={classes.links} to="/">
             <ListItem onClick={() => {}} button>
-              {/* <ListItemIcon>
-                <img src={redLogo} className={classes.genreImages} height={30} />
-              </ListItemIcon> */}
+              <ListItemIcon>
+                <img src={genreIcons[name.toLowerCase()]} className={classes.genreImages} height={30} />
+              </ListItemIcon>
               <ListItemText primary={name} />
             </ListItem>
           </Link>
