@@ -20,18 +20,18 @@ const blueLogo = 'https://fontmeme.com/permalink/220617/a20a0fddee7feac7140aab92
 
 const categories = [
   { label: 'Popular', value: 'popular' },
-  { label: 'Top Rated', value: 'top Rated' },
+  { label: 'Top Rated', value: 'top_rated' },
   { label: 'Upcoming', value: 'upcoming' },
 ];
 
 const Sidebar = ({ setMobileOpen }) => {
-  // const { genreOrCategoryName } = useSelector((state) => state.currentGenreOrCategory);
   const theme = useTheme();
   const classes = useStyles();
   const { data, error, isFetching } = useGetGenresQuery();
   const dispatch = useDispatch();
+  const { genreIdOrCategoryName } = useSelector((state) => state.currentGenreOrCategory);
 
-  // console.log(genreOrCategoryName);
+  console.log(genreIdOrCategoryName);
 
   return (
     <>
