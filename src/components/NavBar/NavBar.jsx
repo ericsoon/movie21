@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 
 import useStyles from './styles';
+import { fetchToken } from '../../utils';
 import { Sidebar, Search } from '..';
 
 const NavBar = () => {
@@ -46,8 +47,8 @@ const NavBar = () => {
           {!isMobile && <Search />}
           <div>
             {!isAuthenticated ? (
-              <Button color="inherit" onClick={() => {}}>
-                Login &nbsp;
+              <Button color="inherit" onClick={fetchToken}>
+                Login &nbsp; <AccountCircle />
               </Button>
             ) : (
               <Button
