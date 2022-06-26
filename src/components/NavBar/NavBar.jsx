@@ -5,11 +5,19 @@ import { Menu, AccountCircle, Brightness4, Brightness7 } from '@mui/icons-materi
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 
+import { useDispatch, useSelector } from 'react-redux';
+import userEvent from '@testing-library/user-event';
+import { setUser, userSelector } from '../../features/auth';
+
 import useStyles from './styles';
 import { fetchToken, createSessionId, moviesApi } from '../../utils';
 import { Sidebar, Search } from '..';
 
 const NavBar = () => {
+  const { isAuthenticated, user } = useSelector(userSelector);
+
+  console.log(user);
+
   const classes = useStyles();
 
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -19,8 +27,7 @@ const NavBar = () => {
 
   const theme = useTheme();
 
-  const isAuthenticated = false;
-  // to know the user is login or not
+  const dispatch = useDispatch();
 
   const token = localStorage.getItem('request_token');
   const sessionIdFromLocalStorage = localStorage.getItem('session_id');
@@ -29,14 +36,20 @@ const NavBar = () => {
     const logInUser = async () => {
       if (token) {
         if (sessionIdFromLocalStorage) {
-          const { data: useData } = await moviesApi.get(`/account?session_id=${sessionIdFromLocalStorage}`);
+          const { data: userData } = await moviesApi.get(`/account?session_id=${sessionIdFromLocalStorage}`);
+
+          dispatch(setUser(userData));
         } else {
           const sessionId = await createSessionId();
 
-          const { data: useData } = await moviesApi.get(`/account?session_id=${session_id}`);
+          const { data: userData } = await moviesApi.get(`/account?session_id=${sessionId}`);
+
+          dispatch(setUser(userData));
         }
       }
     };
+
+    logInUser();
   }, [token]);
 
   return (
@@ -71,7 +84,7 @@ const NavBar = () => {
               <Button
                 color="inherit"
                 component={Link}
-                to="/profile/123"
+                to={`/profile/${user.id}`}
                 className={classes.linkButton}
                 onClick={() => {}}
               >
