@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { AppBar, IconButton, Toolbar, Drawer, Button, Avatar, useMediaQuery } from '@mui/material';
 import { Menu, AccountCircle, Brightness4, Brightness7 } from '@mui/icons-material';
@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 
 import useStyles from './styles';
-import { fetchToken } from '../../utils';
+import { fetchToken, createSessionId, moviesApi } from '../../utils';
 import { Sidebar, Search } from '..';
 
 const NavBar = () => {
@@ -19,8 +19,25 @@ const NavBar = () => {
 
   const theme = useTheme();
 
-  const isAuthenticated = true;
+  const isAuthenticated = false;
   // to know the user is login or not
+
+  const token = localStorage.getItem('request_token');
+  const sessionIdFromLocalStorage = localStorage.getItem('session_id');
+
+  useEffect(() => {
+    const logInUser = async () => {
+      if (token) {
+        if (sessionIdFromLocalStorage) {
+          const { data: useData } = await moviesApi.get(`/account?session_id=${sessionIdFromLocalStorage}`);
+        } else {
+          const sessionId = await createSessionId();
+
+          const { data: useData } = await moviesApi.get(`/account?session_id=${session_id}`);
+        }
+      }
+    };
+  }, [token]);
 
   return (
     <>
