@@ -36,7 +36,7 @@ export const tmdbApi = createApi({
 
     //* Get Movie Infomation
     getMovie: builder.query({
-      query: (id) => `/movie/${id}?append_to_response=videos, credits&api_key=${tmdbApiKey}`,
+      query: (id) => `/movie/${id}?append_to_response=videos,credits&api_key=${tmdbApiKey}`,
     }),
   }),
 });

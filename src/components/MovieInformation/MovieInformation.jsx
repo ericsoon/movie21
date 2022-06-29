@@ -41,8 +41,6 @@ const MovieInformation = () => {
     );
   }
 
-  console.log(data);
-
   return (
     <Grid container className={classes.containerSpaceAround}>
       <Grid item sm={12} lg={4}>
@@ -90,6 +88,7 @@ const MovieInformation = () => {
           Top Cast
         </Typography>
         <Grid item container spacing={2}>
+          {console.log(data)}
           {data && data.credits.cast.map((character, i) => (
             <Grid key={i} item xs={4} md={2} component={Link} to={`/actors/${character.id}`} style={{ textDecoration: 'none' }}>
               <img
