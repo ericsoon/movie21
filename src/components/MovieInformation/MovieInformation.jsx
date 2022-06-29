@@ -9,21 +9,36 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
 import { ClassNames } from '@emotion/react';
-import { useGetMovieQuery } from '../../services/TMDB';
+import { useGetMovieQuery, useGetRecommendationsQuery } from '../../services/TMDB';
 import genreIcons from '../../assets/genres';
 
 import { selectGenreOrCategory } from '../../features/currentGenreOrCategory';
 
 import useStyles from './style';
+import { MovieList } from '..';
 
 const MovieInformation = () => {
   const { id } = useParams();
 
   const { data, isFetching, error } = useGetMovieQuery(id);
 
+  const { data: recommendations, isFetching: isRecommendationsFetching } = useGetRecommendationsQuery({ list: '/recommendations', movie_id: id });
+
   const classes = useStyles();
 
   const dispatch = useDispatch();
+
+  const isMovieFavorited = false;
+
+  const isMovieWatchListed = false;
+
+  const addToFavorites = () => {
+
+  };
+
+  const addToWatchList = () => {
+
+  };
 
   if (isFetching) {
     return (
@@ -69,7 +84,7 @@ const MovieInformation = () => {
           </Typography>
         </Grid>
         <Grid item className={classes.genresContainer}>
-          {data?.genres?.map((genre, i) => (
+          {data?.genres?.map((genre) => (
             <Link className={classes.links} key={genre.name} to="/" onClick={() => dispatch(selectGenreOrCategory(genre.id))}>
               <img src={genreIcons[genre.name.toLowerCase()]} className={classes.genreImage} height={30} />
               <Typography color="textPrimary" variant="subtitle1">
@@ -90,16 +105,66 @@ const MovieInformation = () => {
         <Grid item container spacing={2}>
           {console.log(data)}
           {data && data.credits.cast.map((character, i) => (
+            character.profile_path && (
             <Grid key={i} item xs={4} md={2} component={Link} to={`/actors/${character.id}`} style={{ textDecoration: 'none' }}>
               <img
                 className={classes.castImage}
                 src={`https://image.tmdb.org/t/p/w500/${character.profile_path}`}
                 alt={character.name}
               />
+              <Typography color="textPrimary">
+                {character?.name}
+              </Typography>
+              <Typography color="textSecondary">
+                {character.character.split('/'[0])}
+              </Typography>
             </Grid>
-          ))}
+            )
+          )).slice(0, 6)}
+        </Grid>
+        <Grid item container style={{ marginTop: '2rem' }}>
+          <div className={classes.buttonsContainer}>
+            <Grid item xs={12} sm={6} className={classes.buttonsContainer}>
+              <ButtonGroup size="small" variant="outlined">
+                <Button target="_blank" rel="noopener noreferrer" href={data?.homepage} endIcon={<Language />}>
+                  Website
+                </Button>
+                <Button target="_blank" rel="noopener noreferrer" href={`http://www.imdb.com/title/${data?.imdb_id}`} endIcon={<MovieIcon />}>
+                  IMDB
+                </Button>
+                <Button onClick={() => {}} href="#" endIcon={<Theaters />}>
+                  Trailer
+                </Button>
+              </ButtonGroup>
+            </Grid>
+            <Grid item xs={12} sm={6} className={classes.buttonsContainer}>
+              <ButtonGroup size="medium" variant="outlined">
+                <Button onClick={addToFavorites} endIcon={isMovieFavorited ? <FavoriteBorderOutlined /> : <Favorite />}>
+                  {isMovieFavorited ? 'Unfavorited' : 'Favorited'}
+                </Button>
+                <Button onClick={addToWatchList} endIcon={isMovieWatchListed ? <Remove /> : <PlusOne />}>
+                  {/* {isMovieWatchListed ? 'Remove from Watchlist' : 'Add to watchlist'} */}
+                  Watchlist
+                </Button>
+                <Button endIcon={<ArrowBack />} sx={{ borderColor: 'primary.main' }}>
+                  <Typography component={Link} to="/" color="inherit" variant="subtitle2" style={{ textDecoration: 'none' }}>
+                    Back
+                  </Typography>
+                </Button>
+              </ButtonGroup>
+            </Grid>
+          </div>
         </Grid>
       </Grid>
+      <Box marginTop="5rem" width="100%">
+        <Typography variant="h3" gutterBottom align="center">
+          You might also like
+        </Typography>
+        {/* Loop through the recomended movies ... */}
+        {recommendations
+          ? <MovieList movies={recommendations} numberOfMovies={12} />
+          : <Box> Sorry, nothing was found </Box>}
+      </Box>
     </Grid>
   );
 };
