@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Modal, Typography, Button, ButtonGroup, Grid, Box, CircularProgress, useMediaQuery, Rating } from '@mui/material';
 import { Movie as MovieIcon, Theaters, Language, PlusOne, Favorite, FavoriteBorderOutlined, Remove, ArrowBack } from '@mui/icons-material';
@@ -19,17 +19,14 @@ import { MovieList } from '..';
 
 const MovieInformation = () => {
   const { id } = useParams();
-
   const { data, isFetching, error } = useGetMovieQuery(id);
-
   const { data: recommendations, isFetching: isRecommendationsFetching } = useGetRecommendationsQuery({ list: '/recommendations', movie_id: id });
+  const [open, setOpen] = useState(false);
 
   const classes = useStyles();
-
   const dispatch = useDispatch();
 
   const isMovieFavorited = false;
-
   const isMovieWatchListed = false;
 
   const addToFavorites = () => {
@@ -103,7 +100,6 @@ const MovieInformation = () => {
           Top Cast
         </Typography>
         <Grid item container spacing={2}>
-          {console.log(data)}
           {data && data.credits.cast.map((character, i) => (
             character.profile_path && (
             <Grid key={i} item xs={4} md={2} component={Link} to={`/actors/${character.id}`} style={{ textDecoration: 'none' }}>
@@ -132,7 +128,7 @@ const MovieInformation = () => {
                 <Button target="_blank" rel="noopener noreferrer" href={`http://www.imdb.com/title/${data?.imdb_id}`} endIcon={<MovieIcon />}>
                   IMDB
                 </Button>
-                <Button onClick={() => {}} href="#" endIcon={<Theaters />}>
+                <Button onClick={() => setOpen(true)} href="#" endIcon={<Theaters />}>
                   Trailer
                 </Button>
               </ButtonGroup>
@@ -165,6 +161,24 @@ const MovieInformation = () => {
           ? <MovieList movies={recommendations} numberOfMovies={12} />
           : <Box> Sorry, nothing was found </Box>}
       </Box>
+      <Modal
+        closeAfterTransition
+        className={classes.modal}
+        open={open}
+        onClose={() => setOpen(false)}
+      >
+
+        {data.videos?.results?.length > 0 && (
+          <iframe
+            autoPlay
+            className={classes.video}
+            frameBorder="0"
+            title="Trailer"
+            src={`https://www.youtube.com/embed/${data.videos.results[0].key}`}
+            allow="autoplay"
+          />
+        )}
+      </Modal>
     </Grid>
   );
 };
