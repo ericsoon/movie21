@@ -36,11 +36,7 @@ const Movies = () => {
   return (
     <div>
       <MovieList movies={data} />
-<<<<<<< HEAD
       <Pagination currentPage={page} setPage={setPage} totalPages={data.total_pages} />
-=======
-      <Pagination />
->>>>>>> 0bccccdbd33d831ae4d6a68da54c4ea7fde873c0
     </div>
   );
 };
