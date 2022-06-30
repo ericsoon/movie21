@@ -6,12 +6,12 @@ import { ArrowBack } from '@mui/icons-material';
 
 import { useGetActorHookQuery, useGetMoviesByActorIdQuery } from '../../services/TMDB';
 import useStyle from './style';
-import MovieList from '../MovieList/MovieList';
+import { MovieList, Pagination } from '..';
 
 const Actors = () => {
   const { id } = useParams();
   const history = useHistory();
-  const page = 1;
+  const [page, setPage] = useState(1);
 
   const { data, isFetching, error } = useGetActorHookQuery(id);
   const { data: movies } = useGetMoviesByActorIdQuery({ id, page });
@@ -75,6 +75,7 @@ const Actors = () => {
         {movies
           ? <MovieList movies={movies} numberOfMovies={12} />
           : <Box> Sorry, nothing was found </Box>}
+        <Pagination currentPage={page} setPage={setPage} totalPages={data.total_pages} />
       </Box>
     </>
   );
