@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { AppBar, IconButton, Toolbar, Drawer, Button, Avatar, useMediaQuery } from '@mui/material';
 import { Menu, AccountCircle, Brightness4, Brightness7 } from '@mui/icons-material';
@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 
 import { useDispatch, useSelector } from 'react-redux';
-import userEvent from '@testing-library/user-event';
 import { setUser, userSelector } from '../../features/auth';
+import { ColorModeContext } from '../../utils/ToggleColorMode';
 
 import useStyles from './styles';
 import { fetchToken, createSessionId, moviesApi } from '../../utils';
@@ -15,19 +15,15 @@ import { Sidebar, Search } from '..';
 
 const NavBar = () => {
   const { isAuthenticated, user } = useSelector(userSelector);
-
-  console.log(user);
-
-  const classes = useStyles();
-
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const classes = useStyles();
+  const theme = useTheme();
+  const dispatch = useDispatch();
   const isMobile = useMediaQuery('(max-width:600px)');
   // to adjust the size between mobile and others
 
-  const theme = useTheme();
-
-  const dispatch = useDispatch();
+  const colorMode = useContext(ColorModeContext);
 
   const token = localStorage.getItem('request_token');
   const sessionIdFromLocalStorage = localStorage.getItem('session_id');
@@ -70,7 +66,7 @@ const NavBar = () => {
           <IconButton
             color="inherit"
             sx={{ ml: 1 }}
-            onClick={() => {}}
+            onClick={colorMode.toggleColorMode}
           >
             {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
           </IconButton>

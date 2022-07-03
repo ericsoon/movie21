@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useTheme } from '@mui/styles';
 
-import { height } from '@mui/system';
 import useStyles from './styles';
 
 import genreIcons from '../../assets/genres';
@@ -27,11 +26,13 @@ const categories = [
 const Sidebar = ({ setMobileOpen }) => {
   const theme = useTheme();
   const classes = useStyles();
-  const { data, error, isFetching } = useGetGenresQuery();
+  const { data, isFetching } = useGetGenresQuery();
   const dispatch = useDispatch();
   const { genreIdOrCategoryName } = useSelector((state) => state.currentGenreOrCategory);
 
-  console.log(genreIdOrCategoryName);
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [genreIdOrCategoryName]);
 
   return (
     <>
@@ -49,7 +50,7 @@ const Sidebar = ({ setMobileOpen }) => {
           <Link key={value} className={classes.links} to="/">
             <ListItem onClick={() => dispatch(selectGenreOrCategory(value))} button>
               <ListItemIcon>
-                <img src={genreIcons[label.toLowerCase()]} className={classes.genreImages} height={30} />
+                <img src={genreIcons[label.toLowerCase()]} className={classes.genreImage} height={30} />
               </ListItemIcon>
               <ListItemText primary={label} />
             </ListItem>
@@ -67,7 +68,7 @@ const Sidebar = ({ setMobileOpen }) => {
           <Link key={name} className={classes.links} to="/">
             <ListItem onClick={() => dispatch(selectGenreOrCategory(id))} button>
               <ListItemIcon>
-                <img src={genreIcons[name.toLowerCase()]} className={classes.genreImages} height={30} />
+                <img src={genreIcons[name.toLowerCase()]} className={classes.genreImage} height={30} />
               </ListItemIcon>
               <ListItemText primary={name} />
             </ListItem>
