@@ -60,7 +60,7 @@ const Actors = () => {
               IMDB
             </Button>
             <Button startIcon={<ArrowBack />} onClick={() => history.goBack()} color="primary">
-              <Typography component={Link} to="/" color="inherit" variant="subtitle2" style={{ textDecoration: 'none' }}>
+              <Typography style={{ textDecoration: 'none' }} component={Link} to="/" color="inherit" variant="subtitle2">
                 Back
               </Typography>
             </Button>
