@@ -13,9 +13,9 @@ import { useGetGenresQuery } from '../../services/TMDB';
 
 import { selectGenreOrCategory } from '../../features/currentGenreOrCategory';
 
-const redLogo = 'https://fontmeme.com/permalink/210930/8531c658a743debe1e1aa1a2fc82006e.png';
+const redLogo = 'https://fontmeme.com/permalink/220707/c97bd96ca7e0f44fa6142bb1cf430316.png';
 
-const blueLogo = 'https://fontmeme.com/permalink/220617/a20a0fddee7feac7140aab92d21e476f.png';
+const blueLogo = 'https://fontmeme.com/permalink/220707/7b631107eeadb148f15cc74988a82f7c.png';
 
 const categories = [
   { label: 'Popular', value: 'popular' },
