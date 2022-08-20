@@ -2,7 +2,7 @@
 
 ___
 
-##By Eric Soon
+## By Eric Soon
 
 ___
 
@@ -14,13 +14,23 @@ Movie21 is a movie application that allows users to add favourite and save movie
 
 ___
 
-Installation
+### Installation
 
 - git clone https://github.com/ericsoon/movie21.git
 - npm install --legacy-peer-deps
 - npm start
 
 ___
+
+### Technologies
+
+- [React v17](https://reactjs.org/)
+- [Redux](https://redux.js.org/)
+- [MUI](https://mui.com/)
+- [AlanAI](https://alan.app/)
+
+
+
 
 
 
